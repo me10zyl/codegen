@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{/sbadmin2/layout/main :: layout(~{::title}, ~{::section})}">
+<head>
+    <title th:text="${demo.name}"></title>
+</head>
+<body>
+<section>
+    <style>
+        #tree{
+            overflow:auto; border:0px solid silver; min-height:100px;min-width: 80%;box-shadow: 0 0 5px #ccc;padding: 10px;
+            border-radius: 5px;
+        }
+        #search{
+            width: 50%;
+            margin-bottom: 10px;
+        }
+
+        #fileName{
+            margin-top: 10px;
+            display: block;
+        }
+
+        #fileContent{
+            margin-top: 10px;
+            overflow:auto; border:1px dashed silver; min-height:500px;min-width: 80%;box-shadow: 0 0 5px #ccc;padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+    <div class="row">
+        <h1 th:text="${demo.name}"></h1>
+    </div>
+    <div class="row">
+        文件(夹)名搜索：<input class="form-control form-control-sm" id="search"/>
+    </div>
+    <div class="row">
+        <div id="tree">
+        </div>
+    </div>
+    <div class="row">
+        <div id="fileName"></div>
+    </div>
+    <div class="row">
+         <pre id="fileContent">
+         </pre>
+    </div>
+    <script th:inline="javascript">
+        window.onload = function(){
+            $('#tree').jstree({
+                'core' : {
+                    "themes": {"stripes": true},
+                    'data': {
+                        "url": "/tree/lazy?demo=" +/*[[${demo.name}]]*/null,
+                        "data": function (node) {
+                            return {"id": node.id};
+                        }
+                    }
+                }
+            }).on("select_node.jstree", function (e, data) {
+                let path = data.node.id;
+                if(data.node.icon === 'jstree-file'){
+                    $("#fileName").text(data.node.text)
+                    $.get('/watch/file?path=' + path, function(data){
+                        $("#fileContent").text(data);
+                    });
+                }else{
+                    $("#fileName").text("")
+                    $("#fileContent").text("");
+                }
+            });;
+
+            $("#search").keyup(()=>{
+                console.log('keyup')
+                $('#tree').jstree(true).settings.core.data = {
+                    "url" : "/tree/lazy?s=" + $("#search").val()+"&demo="+/*[[${demo.name}]]*/ null,
+                    "data" : function (node) {
+                        return { "id" : node.id };
+                    }
+                }
+                $('#tree').jstree(true).refresh();
+                $('#tree').jstree(true).settings.core.data.url = "/tree/lazy?demo="+/*[[${demo.name}]]*/ null
+            })
+        }
+    </script>
+</section>
+</body>
+</html>
