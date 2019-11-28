@@ -1,0 +1,102 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <style>
+        .tableDiv {
+        }
+
+        .search input {
+            width: 200px;
+            display: inline-block;
+        }
+
+        .search label {
+            display: inline-block;
+        }
+
+        .search {
+            margin-top: 10px;
+        }
+
+        .search button {
+            float: right;
+            margin: 0 5px;
+        }
+
+        table {
+            margin-bottom: 0px !important;
+        }
+    </style>
+    <script th:src="@{/js/jquery-1.11.1.min.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
+    <script th:src="@{/js/laydate.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap-theme.css}"/>
+</head>
+<body class="container">
+<div class="tableDiv row">
+    <form>
+        <div class="form-group search">
+            <label for="qqgroup">QQ群号</label>
+            <input id="qqgroup" class="form-control" name="qqGroup" th:value="${query.qqGroup}"/>
+            <label for="message">消息</label>
+            <input id="message" class="form-control" name="message" th:value="${query.message}"/>
+            <label for="senderQQ">发送者QQ</label>
+            <input id="senderQQ" class="form-control" name="senderQQ" th:value="${query.senderQQ}"/>
+            <label for="startEndTime">时间</label>
+            <input id="startEndTime" class="form-control"  name="startEndTime" th:value="${query.startEndTime}"/>
+            <button class="btn btn-primary" type="submit">搜索</button>
+            <button class="btn btn-default"  id="reset">清空</button>
+        </div>
+    </form>
+    <table class="table table-hover" id="my-table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>QQ群号</th>
+            <th>发送者QQ</th>
+            <th>消息</th>
+            <th>时间</th>
+        </tr>
+        </thead>
+        <tbody th:attr="pagesize=${pageInfo.pageSize}">
+        <tr th:each="qqmsg,i : ${pageInfo.list}">
+            <td th:text="${i.count}"></td>
+            <td th:text="${qqmsg.groupId}"></td>
+            <td th:text="${qqmsg.senderQq}"></td>
+            <td th:text="${qqmsg.message}"></td>
+            <td th:text="${#dates.format(qqmsg.time,'yyyy-MM-dd HH:mm:ss')}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li th:classappend="${!pageInfo.hasPreviousPage}? 'disabled'">
+                <a th:href="${pageInfo.hasPreviousPage ?  '?page=' + pageInfo.getPrePage() : ''}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li th:classappend="${pageInfo.pageNum == i}? 'active'" th:each="i : ${#numbers.sequence(1, pageInfo.getPages())}"><a th:href="${'?page=' + i}" th:text="${i}"></a></li>
+            <li th:classappend="${!pageInfo.hasNextPage}? 'disabled'">
+                <a th:href="${pageInfo.hasNextPage ? '?page=' + pageInfo.getNextPage() : ''}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<script>
+    window.onload = () => {
+        laydate.render({
+            elem: '#startEndTime', //指定元素
+            type : 'datetime',
+            range : '~'
+        });
+
+        $("#reset").click(()=>{
+            $("form input").val("");
+        })
+    }
+</script>
+</body>
+</html>
