@@ -1,4 +1,4 @@
-package com.yilnz;
+package com.yilnz.codegen;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

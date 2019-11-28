@@ -1,7 +1,7 @@
-package com.yilnz.service;
+package com.yilnz.codegen.service;
 
-import com.yilnz.entity.Demo;
-import com.yilnz.entity.TreeNode;
+import com.yilnz.codegen.entity.TreeNode;
+import com.yilnz.codegen.entity.Demo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

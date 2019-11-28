@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{/sbadmin2/layout/main :: layout(~{::title}, ~{::section})}">
+<head>
+  <title>CodeGen - Setting</title>
+</head>
+<body>
+<section>
+  <style>
+    .f{
+      width: 200px;
+      display: inline-block;
+    }
+    .l{
+      margin-right: 10px;
+      font-size: 17px;
+      font-weight: bolder;
+    }
+    .row{
+      margin-bottom: 10px;
+    }
+  </style>
+  <div class="row">
+    <label class="l">包名</label>
+    <input class="form-control form-control-sm f" th:value="${packageName}" disabled/>
+  </div>
+  <div class="row">
+    <label class="l">生成路径</label>
+    <input class="form-control form-control-sm f"  th:value="${genPath}"/>
+  </div>
+  <div class="row">
+    <button class="btn btn-primary">保存</button>
+  </div>
+</section>
+</body>
+</html>

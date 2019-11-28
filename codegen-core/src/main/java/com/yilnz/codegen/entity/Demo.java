@@ -1,4 +1,4 @@
-package com.yilnz.entity;
+package com.yilnz.codegen.entity;
 
 import lombok.Data;
 
