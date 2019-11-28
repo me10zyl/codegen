@@ -16,7 +16,6 @@
         }
 
         #fileName{
-            margin-top: 10px;
             display: block;
         }
 
@@ -24,6 +23,15 @@
             margin-top: 10px;
             overflow:auto; border:1px dashed silver; min-height:500px;min-width: 80%;box-shadow: 0 0 5px #ccc;padding: 10px;
             border-radius: 5px;
+        }
+        #cpy{
+            margin-left: 15px;
+        }
+        .tool{
+            display: flex;
+            width: 80%;
+            justify-content: space-between;
+            margin-top: 15px;
         }
     </style>
     <div class="row">
@@ -36,15 +44,49 @@
         <div id="tree">
         </div>
     </div>
-    <div class="row">
-        <div id="fileName"></div>
+    <div class="row tool">
+        <div id="fileName"><i class="fa fa-file"></i></div>
+        <div><button id="cpy" class="btn btn-sm btn-dark">复制</button></div>
     </div>
     <div class="row">
          <pre id="fileContent">
          </pre>
     </div>
     <script th:inline="javascript">
+
+        function copyStringToClipboard (str) {
+            // Create new element
+            var el = document.createElement('textarea');
+            // Set value (string to be copied)
+            el.value = str;
+            // Set non-editable to avoid focus and move outside of view
+            el.setAttribute('readonly', '');
+            el.style = {position: 'absolute', left: '-9999px'};
+            document.body.appendChild(el);
+            // Select text inside element
+            el.select();
+            // Copy text to clipboard
+            document.execCommand('copy');
+            // Remove temporary element
+            document.body.removeChild(el);
+
+            $.toast({
+                heading: '提示',
+                text: '拷贝成功',
+                icon: 'info',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
+        }
+
         window.onload = function(){
+
+            $("#cpy").click(function(){
+                const str = $("#fileContent").text();
+                if(str) {
+                    copyStringToClipboard(str)
+                }
+            })
             $('#tree').jstree({
                 'core' : {
                     "themes": {"stripes": true},
