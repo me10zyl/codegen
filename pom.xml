@@ -12,7 +12,7 @@
     <modules>
         <module>cg-spring-boot-minimal</module>
         <module>cg-spring-boot-thymeleaf</module>
-        <module>cg-spring-boot-velocity</module>
+        <module>cg-spring-boot-full</module>
         <module>codegen-core</module>
     </modules>
 
