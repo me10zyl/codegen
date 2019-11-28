@@ -1,9 +1,11 @@
 package com.yilnz.codegen.controller;
 
 import com.yilnz.codegen.entity.Demo;
+import com.yilnz.codegen.entity.Setting;
 import com.yilnz.codegen.entity.TreeNode;
 import com.yilnz.codegen.service.CodeGenService;
 import com.yilnz.codegen.service.DemoService;
+import com.yilnz.codegen.service.SettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,11 +23,16 @@ public class DemoController {
     private DemoService demoService;
     @Autowired
     private CodeGenService codeGenService;
+    @Autowired
+    private SettingService settingService;
 
     @GetMapping("/demo/{demo}")
     public String getByDemoName(@PathVariable("demo") String demo, Model model){
+        final Setting setting = settingService.getProperties();
+        final String generatePath = setting.getGeneratePath();
         final Demo demo1 = demoService.findByDemoName(demo);
         model.addAttribute("demo", demo1);
+        model.addAttribute("generatePath", generatePath);
         return "sbadmin2/demopage";
     }
 
@@ -53,7 +60,7 @@ public class DemoController {
 
     @GetMapping("/generate/gen")
     @ResponseBody
-    public void generate(String demo) throws IOException {
-        codeGenService.codeGenerate(demo);
+    public void generate(String demo, String projectName, String path) throws IOException {
+        codeGenService.codeGenerate(demo, projectName, path);
     }
 }

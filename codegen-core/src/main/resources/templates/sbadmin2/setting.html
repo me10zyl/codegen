@@ -21,15 +21,26 @@
   </style>
   <div class="row">
     <label class="l">包名</label>
-    <input class="form-control form-control-sm f" th:value="${packageName}" disabled/>
+    <input class="form-control form-control-sm f" th:value="${packageName}" disabled name="packageName"/>
   </div>
   <div class="row">
     <label class="l">生成路径</label>
-    <input class="form-control form-control-sm f"  th:value="${genPath}"/>
+    <input class="form-control form-control-sm f"  th:value="${genPath}" name="generatePath"/>
   </div>
   <div class="row">
-    <button class="btn btn-primary">保存</button>
+    <button class="btn btn-primary" id="saveSetting">保存</button>
   </div>
+  <script>
+    $(function(){
+        $("#saveSetting").click(function(){
+            let data = {
+                packageName : $("[name=packageName]").val(),
+                generatePath : $("[name=generatePath]").val(),
+            }
+            $.post('/setting/save', data).done(() => alert('success')).fail(() => alert('failed'));
+        })
+    })
+  </script>
 </section>
 </body>
 </html>

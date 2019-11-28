@@ -96,14 +96,39 @@
             </div>
         </div>
 
+
+        <div id="dialog" title="Basic dialog">
+            <p>
+                <div>
+                    文件路径：<input th:value="${generatePath}" id="genPath"/>
+                </div>
+                <div style="margin-top: 10px">
+                    文件夹名：<input th:value="${demo?.name}" id="fileName1"/>
+                </div>
+            </p>
+            <button class="btn btn-primary" id="gen">生成</button>
+        </div>
+
+
         <script th:inline="javascript">
             function clickGen(){
-                $.get('/generate/gen?demo='+/*[[${demo?.name}]]*/null).done(function(){
-                    alert('生成成功');
-                }).fail(function(){
-                    alert('生成失败');
-                })
+                $( "#dialog" ).dialog({
+                    width:500
+                });
             }
+            $("#gen").click(()=>{
+                let demoName = /*[[${demo?.name}]]*/null;
+                let val = $("#genPath").val();
+                let val1 = $("#fileName1").val();
+                $.get('/generate/gen?demo='+demoName + "&path="+ val+"&projectName="+ val1).done(function(){
+                    if(!val.match(/\/$/)){
+                        val += "/";
+                    }
+                    alert('生成成功:' + val + val1);
+                }).fail(function(e){
+                    alert('生成失败:' + e.responseText);
+                })
+            })
         </script>
     </body>
 </html>

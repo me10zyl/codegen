@@ -16,17 +16,14 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class CodeGenService {
-    @Autowired
-    private SettingService settingService;
 
     @Autowired
     private DemoService demoService;
 
-    public void codeGenerate(String demo) throws IOException {
-        final Setting setting = settingService.getProperties();
-        final String generatePath = setting.getGeneratePath();
+    public void codeGenerate(String demo, String projectName, String generatePath) throws IOException {
+
         final Demo demo1 = demoService.findByDemoName(demo);
-        final File destDir = Paths.get(generatePath, demo1.getName()).toFile();
+        final File destDir = Paths.get(generatePath, projectName).toFile();
         if(!destDir.exists()) {
             FileUtils.copyDirectory(demo1.getFile(), destDir);
         }else{
