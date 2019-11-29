@@ -2,18 +2,24 @@ package com.yilnz.boot.job;
 
 
 import com.yilnz.boot.util.DistributeLock;
+import org.quartz.*;
+import org.quartz.impl.JobDetailImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * Uncomment to use job
  */
-//@Component
+@Component
 public class SomeJob {
 
     private Logger logger = LoggerFactory.getLogger(SomeJob.class);
@@ -21,10 +27,13 @@ public class SomeJob {
     @Autowired
     private DistributeLock lock;
 
+    @Autowired
+    private Scheduler scheduler;
+
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     private final String lockPath = "/com/yilnz/boot/full/somejob";
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedDelay = 5000)
     public void reportCurrentTime() {
         try {
             if(lock.acquire(lockPath)) {
@@ -33,5 +42,17 @@ public class SomeJob {
         } catch (Exception e) {
             logger.error("zk DistributeLock error", e);
         }
+    }
+
+    @PostConstruct
+    public void testAddQuartZ(){
+        final JobDetail jobDetail = JobBuilder.newJob(SomeJobQuartz.class).build();
+        final SimpleTrigger trigger = TriggerBuilder.newTrigger().startNow().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(1).repeatForever()).build();
+        try {
+            scheduler.scheduleJob(jobDetail, trigger);
+        } catch (SchedulerException e) {
+            logger.error("add job error", e);
+        }
+
     }
 }

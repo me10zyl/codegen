@@ -5,6 +5,13 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    initialSize: 3
+    maxActive: 10
+    maxWait: 50000
+    minIdle: 10
+    username: root
+    password: root@db.251
+    type: com.alibaba.druid.pool.DruidDataSource
     druid:
       filter:
         stat:
@@ -18,12 +25,7 @@ spring:
             drop-table-allow: false
           db-type: mysql
           enabled: true
-    initialSize: 3
-    maxActive: 10
-    maxWait: 50000
-    minIdle: 10
-    password: DB@itaojin
-    type: com.alibaba.druid.pool.DruidDataSource
+
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -36,3 +38,8 @@ spring:
     type: ehcache
     ehcache:
       config: classpath:/ehcache.xml
+  quartz:
+    job-store-type: memory
+    auto-startup: true
+    jdbc:
+      initialize-schema: always
