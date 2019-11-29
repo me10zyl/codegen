@@ -1,0 +1,34 @@
+mybatis:
+  mapper-locations: classpath:mybatis/*.xml
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      filter:
+        stat:
+          db-type: mysql
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 2000
+        wall:
+          config:
+            delete-row: false
+            drop-table-allow: false
+          db-type: mysql
+          enabled: true
+    initialSize: 3
+    maxActive: 10
+    maxWait: 50000
+    minIdle: 10
+    password: DB@itaojin
+    type: com.alibaba.druid.pool.DruidDataSource
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+  thymeleaf:
+    prefix: classpath:/templates/

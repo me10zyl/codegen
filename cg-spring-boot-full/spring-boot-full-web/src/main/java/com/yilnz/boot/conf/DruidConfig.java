@@ -2,16 +2,25 @@ package com.yilnz.boot.conf;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * Druid 监控页面 http://localhost:8080/druid 账号密码 lmw 123
  */
 @Configuration
 public class DruidConfig {
+
+    @Value("${durid.monitor.login.username}")
+    private String loginUsername;
+    @Value("${durid.monitor.login.password}")
+    private String loginPassword;
+    @Value("${durid.monitor.reset}")
+    private String resetEnable;
 
     /**
      * 注册一个StatViewServlet
@@ -23,9 +32,9 @@ public class DruidConfig {
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(
                 new StatViewServlet(), "/druid/*");
 
-        servletRegistrationBean.addInitParameter("loginUsername", "lmw");
-        servletRegistrationBean.addInitParameter("loginPassword", "123");
-        servletRegistrationBean.addInitParameter("resetEnable", "false");
+        servletRegistrationBean.addInitParameter("loginUsername", loginUsername);
+        servletRegistrationBean.addInitParameter("loginPassword", loginPassword);
+        servletRegistrationBean.addInitParameter("resetEnable", resetEnable);
         return servletRegistrationBean;
     }
 
