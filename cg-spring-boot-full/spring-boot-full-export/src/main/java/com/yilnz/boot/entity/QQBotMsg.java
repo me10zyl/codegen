@@ -1,8 +1,9 @@
 package com.yilnz.boot.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class QQBotMsg {
+public class QQBotMsg implements Serializable {
     private Integer id;
 
     private String message;
