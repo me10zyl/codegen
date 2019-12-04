@@ -9,8 +9,6 @@ spring:
     maxActive: 10
     maxWait: 50000
     minIdle: 10
-    username: root
-    password: root@db.251
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       filter:
@@ -41,5 +39,3 @@ spring:
   quartz:
     job-store-type: memory
     auto-startup: true
-    jdbc:
-      initialize-schema: always

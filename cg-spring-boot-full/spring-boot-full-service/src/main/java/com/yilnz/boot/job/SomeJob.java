@@ -46,8 +46,15 @@ public class SomeJob {
 
     @PostConstruct
     public void testAddQuartZ(){
-        final JobDetail jobDetail = JobBuilder.newJob(SomeJobQuartz.class).build();
-        final SimpleTrigger trigger = TriggerBuilder.newTrigger().startNow().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(1).repeatForever()).build();
+        final JobDetail jobDetail = JobBuilder.newJob(SomeJobQuartz.class)
+                .withIdentity(new JobKey("myTest", "testGroup")).build();
+        final SimpleTrigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity("trigger1", "triggerGroup")
+                .startNow()
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule()
+                        .withIntervalInSeconds(10)
+                        .repeatForever())
+                .build();
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
