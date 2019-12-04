@@ -39,3 +39,28 @@ spring:
   quartz:
     job-store-type: memory
     auto-startup: true
+#    properties:
+#      org:
+#        quartz:
+#          jobStore:
+#            isClustered: true
+#            clusterCheckinInterval: 20000
+#            dataSource: myDS
+#            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+#            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+#            tablePrefix: QRTZ_
+#          threadPool:
+#            class: org.quartz.simpl.SimpleThreadPool
+#            threadCount: 25
+#            threadPriority: 5
+#          scheduler:
+#            instanceId: AUTO
+#            instanceName : MyClusteredScheduler
+#          dataSource:
+#            myDS:
+#              URL: jdbc:mysql://192.168.4.251:3306/qtz?useUnicode=true&characterEncoding=utf8&useTimezone=true&serverTimezone=GMT%2B8
+#              driver: com.mysql.jdbc.Driver
+#              maxConnections: 5
+#              password: root
+#              user: root@db.251
+#              validationQuery: select 0 from dual

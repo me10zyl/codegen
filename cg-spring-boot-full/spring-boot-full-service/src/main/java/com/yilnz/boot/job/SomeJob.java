@@ -3,12 +3,9 @@ package com.yilnz.boot.job;
 
 import com.yilnz.boot.util.DistributeLock;
 import org.quartz.*;
-import org.quartz.impl.JobDetailImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -52,10 +49,11 @@ public class SomeJob {
                 .withIdentity("trigger1", "triggerGroup")
                 .startNow()
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule()
-                        .withIntervalInSeconds(10)
+                        .withIntervalInSeconds(5)
                         .repeatForever())
                 .build();
         try {
+            scheduler.clear();
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
             logger.error("add job error", e);
